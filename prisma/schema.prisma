@@ -21,6 +21,7 @@ model Field {
   img_1         String?
   img_2         String?
   staffs        StaffField[]
+  Equipment     Equipment[]
 }
 
 model Crop {
@@ -49,6 +50,7 @@ model Staff {
   role        String
   fields      StaffField[]
   vehicle     String[]
+  Equipment   Equipment[]
 }
 
 model StaffField {
@@ -70,4 +72,16 @@ model Vehicle {
   status             Boolean
   allocatedStaff     String
   remarks            String?
+}
+
+model Equipment {
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  equipmentId     String  @unique
+  equipmentName   String
+  equipmentType   String
+  equipmentStatus Boolean
+  assignedStaff   Staff?  @relation(fields: [staffId], references: [staffId])
+  staffId         String?
+  assignedField   Field?  @relation(fields: [fieldCode], references: [fieldCode])
+  fieldCode       String?
 }
