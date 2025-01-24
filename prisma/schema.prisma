@@ -3,28 +3,28 @@
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
-model field {
-  id            Int     @id @default(autoincrement())
-  fieldCode     String  @unique
+model Field {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  fieldCode     String       @unique
   fieldName     String
   fieldLocation String
   fieldSize     String
   img_1         String?
   img_2         String?
+  staffs        StaffField[]
 }
 
 model Crop {
-  id                 Int     @id @default(autoincrement())
+  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
   cropCode           String  @unique
   cropCommonName     String
   cropScientificName String
@@ -32,4 +32,31 @@ model Crop {
   cropField          String
   cropSeason         String
   cropImage          String?
+}
+
+model Staff {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  staffId     String       @unique
+  firstName   String
+  lastName    String
+  designation String
+  gender      String
+  joinedDate  String
+  dob         String
+  address     String
+  contactNo   String
+  email       String       @unique
+  role        String
+  fields      StaffField[]
+  vehicle     String[]
+}
+
+model StaffField {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  staff   Staff  @relation(fields: [staffId], references: [id])
+  staffId String @db.ObjectId
+  field   Field  @relation(fields: [fieldId], references: [id])
+  fieldId String @db.ObjectId
+
+  @@unique([staffId, fieldId])
 }
