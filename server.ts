@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import {fieldRoute} from "./routes/field-route";
 import { PrismaClient } from '@prisma/client';
+import {cropRoute} from "./routes/crop-route";
 
 const app=express();
 const prisma = new PrismaClient();
@@ -10,6 +11,7 @@ app.use(express.json())
 app.use(cors());
 
 app.use('/field',fieldRoute)
+app.use('/crop',cropRoute)
 
 async function connectDatabase() {
     try {

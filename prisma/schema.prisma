@@ -22,3 +22,14 @@ model field {
   img_1         String?
   img_2         String?
 }
+
+model Crop {
+  id                 Int     @id @default(autoincrement())
+  cropCode           String  @unique
+  cropCommonName     String
+  cropScientificName String
+  cropCategory       String
+  cropField          String
+  cropSeason         String
+  cropImage          String?
+}
