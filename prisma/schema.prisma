@@ -60,3 +60,14 @@ model StaffField {
 
   @@unique([staffId, fieldId])
 }
+
+model Vehicle {
+  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
+  vehicleId          String  @unique
+  licensePlateNumber String
+  vehicleCategory    String
+  fuelType           String
+  status             Boolean
+  allocatedStaff     String
+  remarks            String?
+}

@@ -4,6 +4,7 @@ import {fieldRoute} from "./routes/field-route";
 import { PrismaClient } from '@prisma/client';
 import {cropRoute} from "./routes/crop-route";
 import {staffRoute} from "./routes/staff-route";
+import {vehicleRoute} from "./routes/vehicle-route";
 
 const app=express();
 const prisma = new PrismaClient();
@@ -14,6 +15,7 @@ app.use(cors());
 app.use('/field',fieldRoute)
 app.use('/crop',cropRoute)
 app.use('/staff',staffRoute)
+app.use('/vehicle',vehicleRoute)
 
 async function connectDatabase() {
     try {
