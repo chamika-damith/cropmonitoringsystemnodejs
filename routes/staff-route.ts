@@ -23,10 +23,6 @@ router.post('/add', async (req, res) => {
         vehicle,
     } = req.body;
 
-    const fields = field.map(
-        (f: any) => new FieldModel(f.fieldCode, f.fieldName, f.fieldLocation, f.fieldSize, f.img_1, f.img_2)
-    );
-
     const newStaff = new StaffModel(
         staffId,
         firstName,
@@ -39,11 +35,13 @@ router.post('/add', async (req, res) => {
         contactNo,
         email,
         role,
-        fields,
+        field,
         vehicle
     );
 
     try {
+
+        console.log(newStaff)
         const staff = await addStaff(newStaff);
         res.status(201).json(staff);
     } catch (err) {
@@ -79,9 +77,6 @@ router.put('/update', async (req, res) => {
         vehicle,
     } = req.body;
 
-    const fields = field.map(
-        (f: any) => new FieldModel(f.fieldCode, f.fieldName, f.fieldLocation, f.fieldSize, f.img_1, f.img_2)
-    );
 
     const updatedStaff = new StaffModel(
         staffId,
@@ -95,7 +90,7 @@ router.put('/update', async (req, res) => {
         contactNo,
         email,
         role,
-        fields,
+        field,
         vehicle
     );
 

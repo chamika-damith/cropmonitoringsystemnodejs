@@ -13,14 +13,14 @@ datasource db {
 }
 
 model Field {
-  id            String       @id @default(auto()) @map("_id") @db.ObjectId
-  fieldCode     String       @unique
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  fieldCode     String      @unique
   fieldName     String
   fieldLocation String
   fieldSize     String
   img_1         String?
   img_2         String?
-  staffs        StaffField[]
+  staffs        String[]
   Equipment     Equipment[]
 }
 
@@ -36,8 +36,8 @@ model Crop {
 }
 
 model Staff {
-  id          String       @id @default(auto()) @map("_id") @db.ObjectId
-  staffId     String       @unique
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  staffId     String      @unique
   firstName   String
   lastName    String
   designation String
@@ -46,21 +46,11 @@ model Staff {
   dob         String
   address     String
   contactNo   String
-  email       String       @unique
+  email       String      @unique
   role        String
-  fields      StaffField[]
+  fields      String[]
   vehicle     String[]
   Equipment   Equipment[]
-}
-
-model StaffField {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  staff   Staff  @relation(fields: [staffId], references: [id])
-  staffId String @db.ObjectId
-  field   Field  @relation(fields: [fieldId], references: [id])
-  fieldId String @db.ObjectId
-
-  @@unique([staffId, fieldId])
 }
 
 model Vehicle {

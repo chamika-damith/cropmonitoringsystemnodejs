@@ -19,13 +19,7 @@ export async function addStaff(s: StaffModel) {
                 contactNo: s.contactNo,
                 email: s.email,
                 role: s.role,
-                fields: {
-                    create: s.field.map((f) => ({
-                        field: {
-                            connect: { fieldCode: f.fieldCode }
-                        }
-                    }))
-                },
+                fields: s.field,
                 vehicle: s.vehicle
             }
         });
@@ -40,37 +34,19 @@ export async function addStaff(s: StaffModel) {
 // Get all staff members
 export async function getAllStaff() {
     try {
-        return await prisma.staff.findMany({
-            include: {
-                fields: true
-            }
-        });
+        return await prisma.staff.findMany();
     } catch (err) {
         console.error('Error fetching staff:', err);
         throw err;
     }
 }
 
-// Get a specific staff member by staffId
-export async function getStaffById(staffId: string) {
-    try {
-        return await prisma.staff.findUnique({
-            where: { staffId },
-            include: {
-                fields: true
-            }
-        });
-    } catch (err) {
-        console.error('Error fetching staff by ID:', err);
-        throw err;
-    }
-}
 
 // Update a staff member by staffId
 export async function updateStaff(staffId: string, s: StaffModel) {
     try {
         const updatedStaff = await prisma.staff.update({
-            where: { staffId },
+            where: {staffId: staffId },
             data: {
                 firstName: s.firstName,
                 lastName: s.lastName,
@@ -82,13 +58,7 @@ export async function updateStaff(staffId: string, s: StaffModel) {
                 contactNo: s.contactNo,
                 email: s.email,
                 role: s.role,
-                fields: {
-                    create: s.field.map((f) => ({
-                        field: {
-                            connect: { fieldCode: f.fieldCode }
-                        }
-                    }))
-                },
+                fields: s.field,
                 vehicle: s.vehicle
             }
         });
@@ -103,16 +73,8 @@ export async function updateStaff(staffId: string, s: StaffModel) {
 // Delete a staff member by staffId
 export async function deleteStaff(staffId: string) {
     try {
-        await prisma.staffField.deleteMany({
-            where: {
-                staff: {
-                    staffId: staffId
-                }
-            }
-        });
-
         await prisma.staff.delete({
-            where: { staffId }
+            where: {staffId: staffId }
         });
 
         console.log('Staff Deleted:', staffId);
