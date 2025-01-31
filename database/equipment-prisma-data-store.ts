@@ -12,8 +12,8 @@ export async function addEquipment(e: EquipmentModel) {
                 equipmentName: e.equipmentName,
                 equipmentType: e.equipmentType,
                 equipmentStatus: e.equipmentStatus,
-                staffId: e.assignedStaff,
-                fieldCode: e.assignedField,
+                assignedStaff: e.assignedStaff,
+                assignedField: e.assignedField,
             },
         });
         console.log('Equipment Added:', newEquipment);
@@ -27,12 +27,7 @@ export async function addEquipment(e: EquipmentModel) {
 // Get all equipment
 export async function getAllEquipment() {
     try {
-        return await prisma.equipment.findMany({
-            include: {
-                assignedStaff: true,
-                assignedField: true,
-            },
-        });
+        return await prisma.equipment.findMany();
     } catch (err) {
         console.error('Error fetching equipment:', err);
         throw err;
@@ -43,11 +38,7 @@ export async function getAllEquipment() {
 export async function getEquipmentById(equipmentId: string) {
     try {
         return await prisma.equipment.findUnique({
-            where: { equipmentId },
-            include: {
-                assignedStaff: true,
-                assignedField: true,
-            },
+            where: {equipmentId: equipmentId },
         });
     } catch (err) {
         console.error('Error fetching equipment by ID:', err);
@@ -59,13 +50,13 @@ export async function getEquipmentById(equipmentId: string) {
 export async function updateEquipment(equipmentId: string, e: EquipmentModel) {
     try {
         const updatedEquipment = await prisma.equipment.update({
-            where: { equipmentId },
+            where: {equipmentId: equipmentId },
             data: {
                 equipmentName: e.equipmentName,
                 equipmentType: e.equipmentType,
                 equipmentStatus: e.equipmentStatus,
-                staffId: e.assignedStaff,
-                fieldCode: e.assignedField,
+                assignedStaff: e.assignedStaff,
+                assignedField: e.assignedField,
             },
         });
         console.log('Equipment Updated:', updatedEquipment);
@@ -80,7 +71,7 @@ export async function updateEquipment(equipmentId: string, e: EquipmentModel) {
 export async function deleteEquipment(equipmentId: string) {
     try {
         await prisma.equipment.delete({
-            where: { equipmentId },
+            where: {equipmentId: equipmentId },
         });
         console.log('Equipment Deleted:', equipmentId);
     } catch (err) {
